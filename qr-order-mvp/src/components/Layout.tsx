@@ -14,7 +14,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
           <Utensils className="text-orange-600" size={24} />
-          <span className="font-bold text-xl tracking-tight">QR Order</span>
+          <span className="font-bold text-xl tracking-tight">AtokOrder</span>
         </Link>
         <div className="flex gap-4">
           <Link to="/admin" className="p-2 text-stone-500 hover:text-orange-600 transition-colors">

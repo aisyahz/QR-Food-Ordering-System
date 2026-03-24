@@ -9,34 +9,33 @@ const HomePage: React.FC = () => {
         <Utensils size={40} />
       </div>
       
-      <h1 className="text-4xl font-black text-stone-900 mb-4 tracking-tight">
-        Welcome to <span className="text-orange-600">QR Order</span>
+      <h1 className="text-5xl font-black text-stone-900 mb-6 tracking-tight">
+        Scan. Order. <span className="text-orange-600">Done.</span>
       </h1>
-      <p className="text-stone-500 mb-12 max-w-xs mx-auto font-medium leading-relaxed">
-        Experience the future of dining. Scan, order, and pay right from your table.
+      <p className="text-stone-600 mb-12 max-w-xs mx-auto font-semibold text-xl leading-relaxed">
+        So easy even Grandpa can use it.
       </p>
 
       <div className="grid gap-4 w-full max-w-xs">
         <Link 
           to="/menu?table=5" 
-          className="bg-stone-900 text-white w-full py-5 rounded-3xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-stone-900/10"
+          className="bg-stone-900 text-white w-full py-6 rounded-3xl font-bold text-xl flex items-center justify-center gap-3 shadow-xl shadow-stone-900/10"
         >
-          <QrCode size={24} />
-          <span>Scan Table 5</span>
+          <QrCode size={28} />
+          <span>Scan Menu</span>
         </Link>
         
         <Link 
           to="/admin" 
-          className="bg-white text-stone-900 border border-stone-200 w-full py-5 rounded-3xl font-bold flex items-center justify-center gap-3 shadow-sm"
+          className="p-4 text-stone-400 text-sm font-medium hover:text-stone-600 transition-colors"
         >
-          <span>Admin Dashboard</span>
-          <ArrowRight size={20} />
+          Admin Dashboard
         </Link>
       </div>
 
       <div className="mt-16 pt-8 border-t border-stone-100 w-full max-w-xs">
         <p className="text-stone-400 text-xs font-bold uppercase tracking-widest">
-          Powered by AI Studio
+          AtokOrder
         </p>
       </div>
     </div>
