@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "menu_items": {
+      "title": "Menu Item",
+      "description": "A single food or drink item in the restaurant menu.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the item." },
+        "description": { "type": "string", "description": "A short description of the item." },
+        "price": { "type": "number", "description": "The price of the item." },
+        "imageUrl": { "type": "string", "description": "The URL of the item's image." },
+        "category": { "type": "string", "description": "The category the item belongs to (e.g., Main, Drink, Dessert)." },
+        "available": { "type": "boolean", "description": "Whether the item is currently available for ordering." }
+      },
+      "required": ["name", "price", "category", "available"]
+    },
+    "orders": {
+      "title": "Order",
+      "description": "A customer's order containing items and table information.",
+      "type": "object",
+      "properties": {
+        "tableNumber": { "type": "string", "description": "The table number from which the order was placed." },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "menuItemId": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "quantity": { "type": "integer" }
+            }
+          }
+        },
+        "subtotal": { "type": "number" },
+        "total": { "type": "number" },
+        "paymentStatus": { "type": "string", "enum": ["pending", "paid", "failed"] },
+        "orderStatus": { "type": "string", "enum": ["new", "preparing", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tableNumber", "items", "total", "paymentStatus", "orderStatus", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/menu_items/{itemId}": {
+      "schema": "menu_items",
+      "description": "Collection of all menu items."
+    },
+    "/orders/{orderId}": {
+      "schema": "orders",
+      "description": "Collection of all customer orders."
+    }
+  }
+}

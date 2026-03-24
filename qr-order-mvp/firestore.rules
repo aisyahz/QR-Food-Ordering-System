@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "saisyah.zainal@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidMenuItem(data) {
+      return data.keys().hasAll(['name', 'price', 'category', 'available']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.price is number && data.price >= 0 &&
+             data.category is string &&
+             data.available is bool;
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll(['tableNumber', 'items', 'total', 'paymentStatus', 'orderStatus', 'createdAt']) &&
+             data.tableNumber is string && data.tableNumber.size() > 0 &&
+             data.items is list &&
+             data.total is number && data.total >= 0 &&
+             data.paymentStatus in ['pending', 'paid', 'failed'] &&
+             data.orderStatus in ['new', 'preparing', 'completed', 'cancelled'];
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    // Menu Items: Publicly readable, writable only by Admin
+    match /menu_items/{itemId} {
+      allow read, list: if true;
+      allow write: if isAdmin() && isValidMenuItem(request.resource.data);
+    }
+
+    // Orders: 
+    // - Customers can create orders (public for MVP as per request "no customer login")
+    // - Customers can read their own order if they have the ID (simulated by allowing read if they know the ID)
+    // - Admins can read and update all orders
+    match /orders/{orderId} {
+      allow create: if isValidOrder(request.resource.data);
+      allow read, list: if true; // Public read for MVP success page
+      allow update: if isAdmin() && isValidOrder(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // User profiles (for Admin role check)
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow write: if isAdmin();
+    }
+  }
+}
